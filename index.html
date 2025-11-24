@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transferencia de Calor por Radiación - Universidad de América</title>
+    
+    <!-- Tailwind CSS para diseño y estilos -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- MathJax para ecuaciones matemáticas hermosas -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <!-- Chart.js para análisis de sensibilidad -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Google Font: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .slider { -webkit-appearance: none; appearance: none; height: 8px; background: #d1d5db; outline: none; opacity: 0.7; transition: .2s; border-radius: 5px; }
+        .slider:hover { opacity: 1; }
+        .slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 20px; height: 20px; background: #ea580c; cursor: pointer; border-radius: 50%; }
+        .slider::-moz-range-thumb { width: 20px; height: 20px; background: #ea580c; cursor: pointer; border-radius: 50%; }
+        .math-block { overflow-x: auto; padding: 1rem; background-color: #f3f4f6; border-radius: 0.5rem; margin-bottom: 1rem; }
+        .nav-link { cursor: pointer; transition: color 0.3s; }
+        .nav-link:hover { color: #ea580c; }
+        
+        /* Estilos específicos para la portada */
+        .hero-pattern {
+            background-color: #fff7ed;
+            background-image: radial-gradient(#ea580c 0.5px, transparent 0.5px), radial-gradient(#ea580c 0.5px, #fff7ed 0.5px);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- Navegación -->
+    <nav class="bg-white shadow-md fixed w-full z-50 top-0">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <span class="text-2xl font-bold text-orange-600 tracking-tight">Termo<span class="text-gray-700">Radiación</span></span>
+                </div>
+                <div class="hidden md:flex space-x-6 items-center text-sm font-medium">
+                    <a href="#intro" class="nav-link text-gray-600">Teoría</a>
+                    <a href="#aplicaciones" class="nav-link text-gray-600">Aplicaciones</a>
+                    <a href="#simulacion" class="nav-link text-gray-600">Simulación</a>
+                    <a href="#sensibilidad" class="nav-link text-gray-600">Análisis</a>
+                    <a href="#quiz" class="nav-link text-gray-600">Evaluación</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Espaciador para el navbar fijo -->
+    <div class="h-16"></div>
+
+    <!-- Contenido Principal -->
+    <div class="max-w-5xl mx-auto px-4 py-8 space-y-12">
+
+        <!-- 1. PORTADA -->
+        <header class="relative overflow-hidden rounded-2xl shadow-lg border border-orange-100 bg-white">
+            <div class="absolute inset-0 hero-pattern opacity-10"></div>
+            <div class="relative z-10 p-10 text-center">
+                <div class="inline-block px-3 py-1 mb-4 text-xs font-semibold tracking-wider text-orange-600 uppercase bg-orange-100 rounded-full">
+                    Módulo Interactivo
+                </div>
+                <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4">
+                    Conceptos Básicos de Radiación
+                </h1>
+                <h2 class="text-2xl font-semibold text-orange-600 mb-6">
+                    Curso de Transferencia de Calor II
+                </h2>
+                <div class="max-w-2xl mx-auto border-t border-gray-200 pt-6">
+                    <p class="text-lg font-medium text-gray-800">Profesor Juan Andrés Sandoval Herrera</p>
+                    <p class="text-gray-600 mt-1">Universidad de América, 2025</p>
+                </div>
+            </div>
+        </header>
+
+        <!-- Sección 2: Introducción y Teoría -->
+        <section id="intro" class="bg-white p-8 rounded-xl shadow-sm border border-gray-100 scroll-mt-24">
+            <h2 class="text-3xl font-bold mb-6 text-gray-900 border-b pb-2 flex items-center">
+                <span class="bg-orange-600 text-white w-8 h-8 rounded-full flex items-center justify-center text-lg mr-3">1</span> 
+                Principios Teóricos y Ecuaciones
+            </h2>
+            
+            <p class="mb-4 text-lg text-gray-700 leading-relaxed">
+                La <strong>radiación térmica</strong> es la energía emitida por la materia que se encuentra a una temperatura finita. A diferencia de la conducción y la convección, la radiación no requiere la presencia de un medio material; de hecho, la transferencia de radiación es más eficiente en el vacío.
+            </p>
+
+            <div class="grid md:grid-cols-2 gap-8 mt-6">
+                <div class="bg-gray-50 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-orange-600 mb-2">Ley de Stefan-Boltzmann</h3>
+                    <p class="text-sm text-gray-600 mb-3">La potencia emisiva total de un cuerpo negro (emisor ideal) es proporcional a la cuarta potencia de su temperatura absoluta.</p>
+                    <div class="math-block border border-gray-200">
+                        $$E_b = \sigma T^4$$
+                    </div>
+                    <ul class="list-disc ml-5 text-sm text-gray-700 space-y-1">
+                        <li>\(\sigma\): Cte. Stefan-Boltzmann (\(5.67 \times 10^{-8} \, W/m^2 \cdot K^4\))</li>
+                        <li>\(T\): Temperatura absoluta (Kelvin)</li>
+                    </ul>
+                </div>
+
+                <div class="bg-gray-50 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-orange-600 mb-2">Cuerpos Reales (Gris)</h3>
+                    <p class="text-sm text-gray-600 mb-3">Los cuerpos reales emiten menos radiación que un cuerpo negro a la misma temperatura. Esto se cuantifica con la <strong>emisividad</strong>.</p>
+                    <div class="math-block border border-gray-200">
+                        $$E = \epsilon \sigma T^4$$
+                    </div>
+                    <ul class="list-disc ml-5 text-sm text-gray-700 space-y-1">
+                        <li>\(\epsilon\): Emisividad (\(0 \leq \epsilon \leq 1\))</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="mt-8 p-6 bg-blue-50 rounded-lg border border-blue-100">
+                <h3 class="text-xl font-semibold text-blue-800 mb-2">Intercambio Neto entre dos Superficies</h3>
+                <p class="mb-3 text-gray-700">Para dos placas planas paralelas infinitas (Geometría común en ingeniería), el flujo de calor neto (\(q\)) se calcula como:</p>
+                <div class="math-block text-center bg-white border border-blue-200">
+                    $$q_{12} = \frac{\sigma (T_1^4 - T_2^4)}{\frac{1}{\epsilon_1} + \frac{1}{\epsilon_2} - 1} \quad [W/m^2]$$
+                </div>
+                <p class="text-xs text-blue-600 italic mt-2">Nota: Esta ecuación asume factores de visión unitarios y superficies grises difusas.</p>
+            </div>
+        </section>
+
+        <!-- Sección 3: Aplicaciones (Nueva) -->
+        <section id="aplicaciones" class="bg-white p-8 rounded-xl shadow-sm border border-gray-100 scroll-mt-24">
+            <h2 class="text-3xl font-bold mb-6 text-gray-900 border-b pb-2 flex items-center">
+                <span class="bg-orange-600 text-white w-8 h-8 rounded-full flex items-center justify-center text-lg mr-3">2</span>
+                Aplicaciones Prácticas
+            </h2>
+
+            <div class="grid md:grid-cols-2 gap-8 mb-8">
+                <div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                        <svg class="w-6 h-6 mr-2 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+                        Aplicaciones Industriales
+                    </h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <span class="text-orange-500 mr-2">▪</span>
+                            <span class="text-sm text-gray-700"><strong>Hornos Industriales:</strong> En procesos de alta temperatura (siderurgia, vidrio), la radiación es el mecanismo dominante de transferencia de calor, superando a la convección.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-orange-500 mr-2">▪</span>
+                            <span class="text-sm text-gray-700"><strong>Paneles Solares Térmicos:</strong> Utilizan superficies selectivas (alta absortividad solar \(\alpha\), baja emisividad IR \(\epsilon\)) para capturar energía y minimizar pérdidas.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-orange-500 mr-2">▪</span>
+                            <span class="text-sm text-gray-700"><strong>Termometría IR (Pirómetros):</strong> Permiten medir la temperatura de objetos en movimiento o peligrosos a distancia detectando su radiación emitida.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                        <svg class="w-6 h-6 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                        Vida Diaria
+                    </h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <span class="text-blue-500 mr-2">▪</span>
+                            <span class="text-sm text-gray-700"><strong>Termos (Botellas de vacío):</strong> Tienen paredes plateadas (baja emisividad) y vacío entre ellas para eliminar conducción y convección, minimizando pérdidas por radiación.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-blue-500 mr-2">▪</span>
+                            <span class="text-sm text-gray-700"><strong>Ropa de invierno vs. verano:</strong> La ropa blanca refleja la radiación solar (baja \(\alpha\)), manteniéndonos frescos; la ropa oscura absorbe más.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-blue-500 mr-2">▪</span>
+                            <span class="text-sm text-gray-700"><strong>Efecto Invernadero:</strong> Los gases en la atmósfera y el vidrio permiten pasar la radiación solar (onda corta) pero bloquean la radiación emitida por la tierra (onda larga).</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Nuevo Bloque: Fotosíntesis y Bioprocesos -->
+            <div class="bg-green-50 p-6 rounded-lg border border-green-200 shadow-sm">
+                <h3 class="text-xl font-bold text-green-800 mb-4 flex items-center">
+                    <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                    Biosfera: Radiación Solar y Fotosíntesis
+                </h3>
+                <div class="grid md:grid-cols-2 gap-8 items-start">
+                    <div>
+                        <p class="text-sm text-gray-700 mb-3 leading-relaxed">
+                            La radiación solar no solo es calor; es la fuente de energía primaria para la vida. Las plantas y microalgas absorben rangos específicos del espectro, principalmente la <strong>Radiación Fotosintéticamente Activa (PAR)</strong> entre 400 y 700 nm.
+                        </p>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <span class="text-green-600 font-bold mr-2">🌱</span>
+                                <div>
+                                    <span class="text-sm font-bold text-gray-800">Plantas (Crecimiento):</span>
+                                    <span class="text-sm text-gray-700 block">La tasa de radiación absorbida determina la fijación de carbono y la producción de biomasa. El exceso de radiación puede causar fotoinhibición (daño celular), mientras que la falta limita el crecimiento.</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <span class="text-green-600 font-bold mr-2">🦠</span>
+                                <div>
+                                    <span class="text-sm font-bold text-gray-800">Microalgas (Metabolitos):</span>
+                                    <span class="text-sm text-gray-700 block">Estos microorganismos son "fábricas celulares". Ajustando la intensidad de la radiación incidente, se puede inducir la producción de metabolitos de alto valor:</span>
+                                    <ul class="ml-4 mt-1 list-disc text-xs text-gray-600">
+                                        <li><strong>Alta irradiancia (Estrés):</strong> Induce la acumulación de lípidos (biodiésel) y pigmentos antioxidantes como la Astaxantina (color rojo) o Beta-caroteno.</li>
+                                        <li><strong>Baja irradiancia:</strong> Favorece la síntesis de proteínas y clorofila (color verde intenso).</li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-6 flex justify-center">
+                
+            </div>
+        </section>
+
+        <!-- Sección 4: Simulaciones -->
+        <section id="simulacion" class="bg-white p-8 rounded-xl shadow-sm border border-gray-100 scroll-mt-24">
+            <h2 class="text-3xl font-bold mb-6 text-gray-900 border-b pb-2 flex items-center">
+                <span class="bg-orange-600 text-white w-8 h-8 rounded-full flex items-center justify-center text-lg mr-3">3</span>
+                Simulaciones y Cálculos
+            </h2>
+            <p class="mb-6 text-gray-600">Seleccione el tipo de cálculo que desea realizar para visualizar los conceptos teóricos.</p>
+
+            <!-- Pestañas simples -->
+            <div class="flex border-b border-gray-200 mb-6">
+                <button onclick="switchTab('tab1')" id="btn-tab1" class="py-2 px-4 text-orange-600 border-b-2 border-orange-600 font-medium focus:outline-none transition-colors">Emisión Superficie Simple</button>
+                <button onclick="switchTab('tab2')" id="btn-tab2" class="py-2 px-4 text-gray-500 hover:text-orange-600 font-medium focus:outline-none transition-colors">Intercambio entre Placas</button>
+            </div>
+
+            <!-- Calculadora 1: Superficie Simple -->
+            <div id="tab1" class="block animate-fade-in">
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="space-y-4 bg-gray-50 p-6 rounded-lg">
+                        <h3 class="font-bold text-lg text-gray-800">Parámetros de Entrada</h3>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Temperatura Superficie (°C)</label>
+                            <input type="number" id="sim1_temp" value="100" class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" oninput="calculateSim1()">
+                            <p class="text-xs text-gray-500 mt-1">Se convertirá automáticamente a Kelvin.</p>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Emisividad (\(\epsilon\))</label>
+                            <div class="flex items-center space-x-2 mt-1">
+                                <input type="range" min="0.01" max="1.0" step="0.01" value="0.8" id="sim1_emissivity_slider" class="slider w-full" oninput="syncInputs('sim1_emissivity', this.value); calculateSim1()">
+                                <input type="number" id="sim1_emissivity" value="0.8" step="0.01" max="1" min="0" class="w-20 p-1 border rounded text-center" oninput="syncInputs('sim1_emissivity_slider', this.value); calculateSim1()">
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1">1.0 = Cuerpo Negro Ideal | 0.05 = Metal Pulido</p>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Área Superficial (m²)</label>
+                            <input type="number" id="sim1_area" value="2.0" step="0.1" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" oninput="calculateSim1()">
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col justify-center items-center bg-orange-50 p-6 rounded-lg border border-orange-100">
+                        <h3 class="font-bold text-lg text-orange-800 mb-4">Resultados</h3>
+                        <div class="text-center">
+                            <p class="text-sm text-gray-600">Potencia Emisiva Total (Q)</p>
+                            <p id="res1_power" class="text-4xl font-bold text-orange-600 my-2">-- W</p>
+                            <p class="text-sm text-gray-600">Flujo de Calor (q")</p>
+                            <p id="res1_flux" class="text-xl font-semibold text-gray-800">-- W/m²</p>
+                        </div>
+                        <div class="mt-6 text-sm bg-white p-3 rounded border border-orange-200 w-full text-center">
+                            <strong>Fórmula aplicada:</strong><br>
+                            \(Q = \epsilon \cdot \sigma \cdot A \cdot (T_{°C} + 273.15)^4\)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Calculadora 2: Intercambio Placas -->
+            <div id="tab2" class="hidden animate-fade-in">
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="space-y-4 bg-gray-50 p-6 rounded-lg">
+                        <h3 class="font-bold text-lg text-red-700">Placa 1 (Caliente)</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold uppercase text-gray-500">Temp T1 (°C)</label>
+                                <input type="number" id="p2_t1" value="500" class="w-full p-2 border rounded mt-1" oninput="calculateSim2()">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase text-gray-500">Emisividad \(\epsilon_1\)</label>
+                                <input type="number" id="p2_e1" value="0.9" step="0.05" max="1" min="0.01" class="w-full p-2 border rounded mt-1" oninput="calculateSim2()">
+                            </div>
+                        </div>
+
+                        <hr class="border-gray-300 my-4">
+
+                        <h3 class="font-bold text-lg text-blue-700">Placa 2 (Fría)</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold uppercase text-gray-500">Temp T2 (°C)</label>
+                                <input type="number" id="p2_t2" value="30" class="w-full p-2 border rounded mt-1" oninput="calculateSim2()">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase text-gray-500">Emisividad \(\epsilon_2\)</label>
+                                <input type="number" id="p2_e2" value="0.6" step="0.05" max="1" min="0.01" class="w-full p-2 border rounded mt-1" oninput="calculateSim2()">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col justify-center items-center bg-blue-50 p-6 rounded-lg border border-blue-100">
+                        <h3 class="font-bold text-lg text-blue-800 mb-4">Intercambio Neto de Radiación</h3>
+                        <div class="text-center">
+                            <p class="text-sm text-gray-600">Flujo Neto de Calor (q₁₂)</p>
+                            <p id="res2_flux" class="text-4xl font-bold text-blue-600 my-2">-- W/m²</p>
+                        </div>
+                        
+                        <div class="mt-6 w-full">
+                            <h4 class="text-sm font-bold text-gray-700 mb-2">Esquema del Flujo</h4>
+                            <div class="relative h-32 bg-white border rounded flex items-center justify-between px-8 overflow-hidden shadow-inner">
+                                <div class="w-8 h-full bg-red-500 flex items-center justify-center text-white font-bold writing-vertical shadow-lg z-10" style="writing-mode: vertical-rl">T1</div>
+                                <div class="flex-1 flex flex-col items-center justify-center px-2">
+                                    <div class="text-xs text-gray-400 mb-1">Transferencia Neta</div>
+                                    <div class="w-full h-3 bg-gradient-to-r from-red-400 to-blue-400 rounded-full opacity-80"></div>
+                                    <div class="text-xs text-gray-500 mt-1 font-mono tracking-widest">>>>>></div>
+                                </div>
+                                <div class="w-8 h-full bg-blue-500 flex items-center justify-center text-white font-bold writing-vertical shadow-lg z-10" style="writing-mode: vertical-rl">T2</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección 5: Análisis de Sensibilidad -->
+        <section id="sensibilidad" class="bg-white p-8 rounded-xl shadow-sm border border-gray-100 scroll-mt-24">
+            <h2 class="text-3xl font-bold mb-6 text-gray-900 border-b pb-2 flex items-center">
+                <span class="bg-orange-600 text-white w-8 h-8 rounded-full flex items-center justify-center text-lg mr-3">4</span>
+                Análisis de Sensibilidad
+            </h2>
+            <p class="mb-4 text-gray-700">
+                La característica más crítica de la radiación es su dependencia con \(T^4\). Pequeños cambios en la temperatura provocan cambios masivos en la energía emitida.
+            </p>
+
+            <div class="grid lg:grid-cols-3 gap-8">
+                <!-- Controles -->
+                <div class="lg:col-span-1 bg-gray-50 p-6 rounded-lg h-fit">
+                    <h3 class="font-bold text-lg mb-4 text-gray-800">Variables de Control</h3>
+                    
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium mb-2">Emisividad Constante (\(\epsilon\))</label>
+                        <input type="range" id="sens_emissivity" min="0.1" max="1.0" step="0.1" value="0.8" class="slider w-full" oninput="updateChart()">
+                        <div class="text-right text-sm font-bold text-orange-600 mt-1" id="sens_emissivity_val">0.8</div>
+                    </div>
+
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium mb-2">Rango Máximo de Temp. (°C)</label>
+                        <select id="sens_max_temp" class="w-full p-2 border rounded bg-white" onchange="updateChart()">
+                            <option value="500">Hasta 500 °C</option>
+                            <option value="1000" selected>Hasta 1000 °C</option>
+                            <option value="2000">Hasta 2000 °C</option>
+                        </select>
+                    </div>
+
+                    <div class="bg-blue-50 p-4 rounded text-sm text-blue-800 border-l-4 border-blue-500">
+                        <strong>Observación Clave:</strong> Note cómo la curva se vuelve exponencialmente más empinada a medida que la temperatura aumenta. ¡Este es el efecto de la cuarta potencia!
+                    </div>
+                </div>
+
+                <!-- Gráfico -->
+                <div class="lg:col-span-2 h-80 bg-white p-2 border rounded-lg">
+                    <canvas id="sensitivityChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección 6: Preguntas y Repaso -->
+        <section id="quiz" class="grid md:grid-cols-2 gap-8 scroll-mt-24">
+            
+            <!-- Preguntas Conceptuales -->
+            <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-gray-900 flex items-center">
+                        <span class="bg-orange-600 text-white w-8 h-8 rounded-full flex items-center justify-center text-lg mr-3">5</span>
+                        Evaluación
+                    </h2>
+                    <span id="score-display" class="hidden px-3 py-1 bg-orange-100 text-orange-800 rounded-full font-bold text-sm">Calif: 0/5</span>
+                </div>
+                
+                <p class="text-sm text-gray-500 mb-4">Responda las siguientes 5 preguntas aleatorias seleccionadas del banco de temas.</p>
+
+                <!-- Contenedor dinámico de preguntas -->
+                <div id="quiz-container" class="space-y-6">
+                    <!-- Las preguntas se generarán aquí con JavaScript -->
+                </div>
+                
+                <div id="quiz-result" class="hidden mt-4 p-4 bg-gray-100 rounded text-center font-bold"></div>
+
+                <button id="btn-check" onclick="checkQuiz()" class="mt-6 w-full bg-orange-600 text-white py-2 px-4 rounded hover:bg-orange-700 transition font-semibold shadow-md">Verificar Respuestas</button>
+                <button id="btn-reset" onclick="initQuiz()" class="hidden mt-6 w-full bg-gray-200 text-gray-700 py-2 px-4 rounded hover:bg-gray-300 transition font-semibold">Intentar de nuevo con nuevas preguntas</button>
+            </div>
+
+            <!-- Ejercicio Práctico y Referencias -->
+            <div class="flex flex-col gap-8">
+                <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
+                    <h2 class="text-2xl font-bold mb-6 text-gray-900 flex items-center">
+                        <span class="bg-orange-600 text-white w-8 h-8 rounded-full flex items-center justify-center text-lg mr-3">6</span>
+                        Ejercicio Práctico
+                    </h2>
+                    
+                    <div class="bg-orange-50 p-5 rounded-lg border border-orange-200 mb-4">
+                        <h3 class="font-bold text-gray-800 flex items-center">
+                            <span class="mr-2">📝</span> Problema: Escudo Térmico
+                        </h3>
+                        <p class="text-sm mt-2 text-gray-700 leading-relaxed">
+                            Se tienen dos placas paralelas muy grandes que actúan como un escudo térmico. <br>
+                            La <strong>Placa 1</strong> está a <strong>800 K</strong> (\(\epsilon_1 = 0.8\)). <br>
+                            La <strong>Placa 2</strong> está a <strong>300 K</strong> (\(\epsilon_2 = 0.8\)). <br>
+                            <br>
+                            Calcule el flujo de calor neto por radiación entre ellas en \(W/m^2\).
+                        </p>
+                    </div>
+
+                    <div class="mb-4">
+                        <button onclick="toggleSolution()" class="text-orange-600 font-semibold hover:text-orange-800 flex items-center transition-colors">
+                            <span id="sol-icon" class="mr-2 text-xl">▶</span> Ver Solución Detallada
+                        </button>
+                    </div>
+
+                    <div id="solution-box" class="hidden bg-gray-50 p-5 rounded-lg text-sm space-y-4 border border-gray-200 animate-fade-in">
+                        <div>
+                            <p class="font-bold text-gray-800">Paso 1: Identificar la ecuación</p>
+                            <p class="text-gray-600">Para placas paralelas infinitas:</p>
+                            <div class="my-2 text-center">$$q = \frac{\sigma(T_1^4 - T_2^4)}{\frac{1}{\epsilon_1} + \frac{1}{\epsilon_2} - 1}$$</div>
+                        </div>
+
+                        <div>
+                            <p class="font-bold text-gray-800">Paso 2: Sustituir valores</p>
+                            <ul class="list-disc ml-4 text-gray-600 space-y-1">
+                                <li>\(\sigma = 5.67 \times 10^{-8}\)</li>
+                                <li>\(T_1^4 = 800^4 \approx 4.10 \times 10^{11}\)</li>
+                                <li>\(T_2^4 = 300^4 = 8.1 \times 10^9\)</li>
+                            </ul>
+                            <p class="mt-1 text-gray-600">Numerador: \(5.67 \times 10^{-8} (4.10 \times 10^{11} - 8.1 \times 10^9) \approx 22765\)</p>
+                        </div>
+
+                        <div>
+                            <p class="font-bold text-gray-800">Paso 3: Calcular Resistencia</p>
+                            <p class="text-gray-600">\(Denom = \frac{1}{0.8} + \frac{1}{0.8} - 1 = 1.25 + 1.25 - 1 = 1.5\)</p>
+                        </div>
+
+                        <div class="bg-green-50 p-3 rounded border border-green-200">
+                            <p class="font-bold text-green-800">Resultado Final</p>
+                            <div class="text-center font-bold text-lg text-green-700">$$q = \frac{22765}{1.5} \approx 15,176 \, W/m^2$$</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Referencias -->
+                <div id="referencias" class="bg-gray-100 p-6 rounded-xl border border-gray-200">
+                    <h3 class="text-lg font-bold text-gray-700 mb-3">📚 Referencias Bibliográficas</h3>
+                    <ul class="text-xs text-gray-600 space-y-2 list-disc pl-4">
+                        <li>Incropera, F. P., & DeWitt, D. P. (2002). <em>Fundamentos de transferencia de calor</em>. México: Prentice Hall.</li>
+                        <li>Cengel, Y. A. (2007). <em>Transferencia de calor y masa: Un enfoque práctico</em>. McGraw-Hill Interamericana.</li>
+                        <li>Modest, M. F. (2013). <em>Radiative Heat Transfer</em>. Academic Press.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="text-center text-gray-500 text-sm pb-8 border-t border-gray-200 pt-8 mt-12">
+            <p>Universidad de América - Facultad de Ingeniería</p>
+            <p class="mt-1">Módulo Educativo de Transferencia de Calor generado para fines didácticos.</p>
+        </footer>
+
+    </div>
+
+    <!-- Scripts de Lógica -->
+    <script>
+        const SIGMA = 5.67e-8; // Stefan-Boltzmann constant
+
+        // --- Banco de Preguntas (Aleatorias) ---
+        const questionPool = [
+            {
+                q: "Si la temperatura absoluta de un cuerpo negro se duplica, ¿cuánto aumenta su potencia emisiva?",
+                options: ["Se duplica (2x)", "Se cuadruplica (4x)", "Aumenta 16 veces (16x)"],
+                correct: 2,
+                expl: "Según Stefan-Boltzmann (E ∝ T⁴), si T se duplica, E aumenta 2⁴ = 16 veces."
+            },
+            {
+                q: "¿Qué papel juega la emisividad (ε)?",
+                options: ["Determina la longitud de onda.", "Mide cuán cerca está una superficie de ser un cuerpo negro ideal.", "Es una constante universal."],
+                correct: 1,
+                expl: "La emisividad (0 a 1) indica la eficiencia de emisión comparada con un cuerpo negro ideal."
+            },
+            {
+                q: "¿Qué sucede con la radiación térmica en el vacío?",
+                options: ["No se transmite.", "Se transmite con máxima eficiencia.", "Requiere un medio conductor."],
+                correct: 1,
+                expl: "La radiación es electromagnética y no necesita medio material; el vacío es ideal."
+            },
+            {
+                q: "Según la Ley de Wien, si un objeto se calienta más, su color (pico de emisión) tiende hacia:",
+                options: ["El rojo (mayor longitud de onda).", "El azul/violeta (menor longitud de onda).", "Se mantiene constante."],
+                correct: 1,
+                expl: "A mayor temperatura, la longitud de onda pico disminuye (se desplaza al azul)."
+            },
+            {
+                q: "¿Qué es el Factor de Visión (View Factor)?",
+                options: ["La fracción de radiación que sale de una superficie e intercepta a otra.", "La intensidad del brillo visible.", "El coeficiente de reflexión."],
+                correct: 0,
+                expl: "Es puramente geométrico: cuánto 've' una superficie a la otra."
+            },
+            {
+                q: "Para un cuerpo opaco, si la absortividad (α) es 0.3, ¿cuál es su reflectividad (ρ)?",
+                options: ["0.3", "0.7", "1.0"],
+                correct: 1,
+                expl: "En cuerpos opacos, α + ρ = 1. Por tanto, ρ = 1 - 0.3 = 0.7."
+            },
+            {
+                q: "¿Qué superficie emite MÁS radiación a la misma temperatura?",
+                options: ["Papel de aluminio pulido (ε ≈ 0.05)", "Pintura negra mate (ε ≈ 0.95)", "Ladrillo rojo (ε ≈ 0.60)"],
+                correct: 1,
+                expl: "A mayor emisividad (ε), mayor potencia radiada. El negro mate es el más alto."
+            },
+            {
+                q: "La Ley de Kirchhoff establece que en equilibrio térmico:",
+                options: ["Emisividad (ε) = Absortividad (α)", "Emisividad (ε) > Reflectividad (ρ)", "Absortividad (α) = 1"],
+                correct: 0,
+                expl: "Para una superficie en equilibrio con sus alrededores, lo que absorbe es igual a lo que puede emitir."
+            }
+        ];
+
+        let currentQuestions = [];
+
+        function initQuiz() {
+            // 1. Barajar preguntas
+            const shuffled = [...questionPool].sort(() => 0.5 - Math.random());
+            // 2. Tomar las primeras 5
+            currentQuestions = shuffled.slice(0, 5);
+            
+            // 3. Renderizar HTML
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = '';
+            
+            currentQuestions.forEach((item, index) => {
+                const qDiv = document.createElement('div');
+                qDiv.className = "pb-4 border-b border-gray-100 last:border-0";
+                
+                let optionsHtml = '';
+                item.options.forEach((opt, optIndex) => {
+                    optionsHtml += `
+                        <label class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded transition-colors">
+                            <input type="radio" name="q${index}" value="${optIndex}" class="mr-3 text-orange-600 focus:ring-orange-500 h-4 w-4">
+                            <span class="text-sm text-gray-700">${opt}</span>
+                        </label>
+                    `;
+                });
+
+                qDiv.innerHTML = `
+                    <p class="font-medium mb-2 text-gray-800"><span class="text-orange-600 font-bold mr-1">P${index + 1}.</span> ${item.q}</p>
+                    <div class="space-y-1 ml-2">
+                        ${optionsHtml}
+                    </div>
+                    <div id="fb-q${index}" class="hidden mt-2 text-xs p-3 rounded animate-fade-in"></div>
+                `;
+                container.appendChild(qDiv);
+            });
+
+            // Resetear UI
+            document.getElementById('score-display').classList.add('hidden');
+            document.getElementById('quiz-result').classList.add('hidden');
+            document.getElementById('btn-check').classList.remove('hidden');
+            document.getElementById('btn-reset').classList.add('hidden');
+        }
+
+        function checkQuiz() {
+            let score = 0;
+            let allAnswered = true;
+
+            currentQuestions.forEach((item, index) => {
+                const radios = document.getElementsByName(`q${index}`);
+                let selected = -1;
+                for (const r of radios) {
+                    if (r.checked) selected = parseInt(r.value);
+                }
+
+                const fbElem = document.getElementById(`fb-q${index}`);
+                fbElem.classList.remove('hidden');
+
+                if (selected === -1) {
+                    allAnswered = false;
+                    fbElem.className = "mt-2 text-xs p-3 rounded bg-yellow-100 text-yellow-800 border-l-4 border-yellow-500";
+                    fbElem.innerText = "⚠️ Por favor selecciona una respuesta.";
+                } else if (selected === item.correct) {
+                    score++;
+                    fbElem.className = "mt-2 text-xs p-3 rounded bg-green-50 text-green-800 border-l-4 border-green-500";
+                    fbElem.innerHTML = `<strong>✅ ¡Correcto!</strong> ${item.expl}`;
+                } else {
+                    fbElem.className = "mt-2 text-xs p-3 rounded bg-red-50 text-red-800 border-l-4 border-red-500";
+                    fbElem.innerHTML = `<strong>❌ Incorrecto.</strong> ${item.expl}`;
+                }
+            });
+
+            if (allAnswered) {
+                // Mostrar puntuación final
+                const scoreDisplay = document.getElementById('score-display');
+                const percent = (score/5)*100;
+                scoreDisplay.innerText = `Calif: ${score}/5 (${percent}%)`;
+                scoreDisplay.classList.remove('hidden');
+                
+                // Botones
+                document.getElementById('btn-check').classList.add('hidden');
+                document.getElementById('btn-reset').classList.remove('hidden');
+
+                // Mensaje final
+                const resultBox = document.getElementById('quiz-result');
+                resultBox.classList.remove('hidden');
+                if (score === 5) {
+                    resultBox.className = "mt-4 p-4 bg-green-100 text-green-800 rounded-lg text-center border border-green-300 shadow-sm";
+                    resultBox.innerHTML = "<div class='text-2xl mb-1'>🏆</div><strong>¡Excelente!</strong><br>Has dominado todos los conceptos.";
+                } else if (score >= 3) {
+                    resultBox.className = "mt-4 p-4 bg-blue-50 text-blue-800 rounded-lg text-center border border-blue-200 shadow-sm";
+                    resultBox.innerHTML = "<div class='text-2xl mb-1'>👍</div><strong>Buen trabajo.</strong><br>Revisa los errores para perfeccionar tu conocimiento.";
+                } else {
+                    resultBox.className = "mt-4 p-4 bg-orange-50 text-orange-800 rounded-lg text-center border border-orange-200 shadow-sm";
+                    resultBox.innerHTML = "<div class='text-2xl mb-1'>📚</div><strong>Sigue practicando.</strong><br>Te recomiendo repasar la teoría e intentar de nuevo.";
+                }
+            }
+        }
+
+        // --- Lógica de Pestañas ---
+        function switchTab(tabId) {
+            document.getElementById('tab1').classList.add('hidden');
+            document.getElementById('tab2').classList.add('hidden');
+            document.getElementById('tab' + tabId.slice(-1)).classList.remove('hidden');
+            
+            // Actualizar estilos de botones
+            document.getElementById('btn-tab1').className = "py-2 px-4 text-gray-500 hover:text-orange-600 font-medium focus:outline-none transition-colors";
+            document.getElementById('btn-tab2').className = "py-2 px-4 text-gray-500 hover:text-orange-600 font-medium focus:outline-none transition-colors";
+            
+            const activeBtn = document.getElementById('btn-' + tabId);
+            activeBtn.className = "py-2 px-4 text-orange-600 border-b-2 border-orange-600 font-medium focus:outline-none transition-colors";
+        }
+
+        function syncInputs(targetId, value) {
+            document.getElementById(targetId).value = value;
+        }
+
+        // --- Simulador 1: Superficie Simple ---
+        function calculateSim1() {
+            const t_c = parseFloat(document.getElementById('sim1_temp').value);
+            const eps = parseFloat(document.getElementById('sim1_emissivity').value);
+            const area = parseFloat(document.getElementById('sim1_area').value);
+
+            // Validación básica
+            if (isNaN(t_c) || isNaN(eps) || isNaN(area)) return;
+
+            const t_k = t_c + 273.15;
+            
+            // Ecuación: Q = eps * sigma * A * T^4
+            const flux = eps * SIGMA * Math.pow(t_k, 4); // W/m2
+            const power = flux * area; // W
+
+            // Formatear salida
+            document.getElementById('res1_power').innerText = power.toLocaleString('es-ES', {maximumFractionDigits: 1}) + " W";
+            document.getElementById('res1_flux').innerText = flux.toLocaleString('es-ES', {maximumFractionDigits: 1}) + " W/m²";
+        }
+
+        // --- Simulador 2: Placas Paralelas ---
+        function calculateSim2() {
+            const t1_c = parseFloat(document.getElementById('p2_t1').value);
+            const e1 = parseFloat(document.getElementById('p2_e1').value);
+            const t2_c = parseFloat(document.getElementById('p2_t2').value);
+            const e2 = parseFloat(document.getElementById('p2_e2').value);
+
+            if (isNaN(t1_c) || isNaN(e1) || isNaN(t2_c) || isNaN(e2)) return;
+
+            const t1_k = t1_c + 273.15;
+            const t2_k = t2_c + 273.15;
+
+            // Denominador: 1/e1 + 1/e2 - 1
+            const resistance = (1/e1) + (1/e2) - 1;
+            
+            // Numerador: sigma * (T1^4 - T2^4)
+            const potential = SIGMA * (Math.pow(t1_k, 4) - Math.pow(t2_k, 4));
+
+            const netFlux = potential / resistance;
+
+            document.getElementById('res2_flux').innerText = netFlux.toLocaleString('es-ES', {maximumFractionDigits: 1}) + " W/m²";
+        }
+
+        // --- Análisis de Sensibilidad (Chart.js) ---
+        let myChart = null;
+
+        function initChart() {
+            const ctx = document.getElementById('sensitivityChart').getContext('2d');
+            myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Potencia Emisiva (W/m²)',
+                        data: [],
+                        borderColor: 'rgb(234, 88, 12)',
+                        backgroundColor: 'rgba(234, 88, 12, 0.1)',
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { title: { display: true, text: 'Temperatura (°C)' } },
+                        y: { title: { display: true, text: 'Potencia (W/m²)' } }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.parsed.y.toFixed(0) + ' W/m²';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            updateChart();
+        }
+
+        function updateChart() {
+            const eps = parseFloat(document.getElementById('sens_emissivity').value);
+            const maxTemp = parseInt(document.getElementById('sens_max_temp').value);
+            
+            document.getElementById('sens_emissivity_val').innerText = eps;
+
+            // Generar datos
+            const labels = [];
+            const data = [];
+            const steps = 20;
+            const stepSize = maxTemp / steps;
+
+            for (let i = 0; i <= steps; i++) {
+                const t_c = i * stepSize;
+                const t_k = t_c + 273.15;
+                const flux = eps * SIGMA * Math.pow(t_k, 4);
+                
+                labels.push(t_c.toFixed(0));
+                data.push(flux);
+            }
+
+            myChart.data.labels = labels;
+            myChart.data.datasets[0].data = data;
+            myChart.update();
+        }
+
+        // --- Ejercicio ---
+        function toggleSolution() {
+            const box = document.getElementById('solution-box');
+            const icon = document.getElementById('sol-icon');
+            if (box.classList.contains('hidden')) {
+                box.classList.remove('hidden');
+                icon.innerText = "▼";
+            } else {
+                box.classList.add('hidden');
+                icon.innerText = "▶";
+            }
+        }
+
+        // Inicializar al cargar
+        window.onload = function() {
+            calculateSim1();
+            calculateSim2();
+            initChart();
+            initQuiz();
+        };
+
+    </script>
+</body>
+</html>
